@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MobileAgent</string>
+    <string name="accessibility_service_description">MobileAgent needs accessibility access to perform taps, swipes, and text input on your behalf.</string>
+
+    <!-- Navigation -->
+    <string name="nav_main">Home</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_permissions">Permissions</string>
+
+    <!-- Main Screen -->
+    <string name="instruction_hint">Enter your instruction…</string>
+    <string name="btn_start">Start</string>
+    <string name="btn_stop">Stop</string>
+    <string name="status_idle">Ready</string>
+    <string name="status_running">Running…</string>
+    <string name="status_finished">Finished</string>
+    <string name="execution_log">Execution Log</string>
+    <string name="no_logs">No execution logs yet</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">API Settings</string>
+    <string name="settings_provider">Provider</string>
+    <string name="settings_endpoint">API Endpoint</string>
+    <string name="settings_endpoint_hint">https://api.openai.com/v1</string>
+    <string name="settings_api_key">API Key</string>
+    <string name="settings_api_key_hint">sk-…</string>
+    <string name="settings_model">Model Name</string>
+    <string name="settings_model_hint">gpt-4o</string>
+    <string name="settings_coordinate_type">Coordinate Type</string>
+    <string name="settings_coord_absolute">Absolute</string>
+    <string name="settings_coord_normalized">Normalized (0–1000)</string>
+    <string name="settings_max_steps">Max Steps</string>
+    <string name="settings_enable_notetaker">Enable Notetaker</string>
+    <string name="settings_saved">Settings saved</string>
+    <string name="settings_save">Save</string>
+    <string name="settings_test_connection">Test Connection</string>
+
+    <!-- Permission Screen -->
+    <string name="permissions_title">Permissions</string>
+    <string name="perm_accessibility">Accessibility Service</string>
+    <string name="perm_accessibility_desc">Required for tapping, swiping, and typing on screen</string>
+    <string name="perm_overlay">Overlay Permission</string>
+    <string name="perm_overlay_desc">Required for floating control panel</string>
+    <string name="perm_notification">Notification Permission</string>
+    <string name="perm_notification_desc">Required for foreground service</string>
+    <string name="perm_status_granted">Granted</string>
+    <string name="perm_status_denied">Not Granted</string>
+    <string name="perm_btn_enable">Enable</string>
+    <string name="perm_all_granted">All permissions granted</string>
+    <string name="perm_battery">Battery Optimization</string>
+    <string name="perm_battery_desc">Exempt from battery optimization to keep accessibility service alive</string>
+
+    <!-- Permission Dialog -->
+    <string name="dialog_missing_permissions_title">Permissions Required</string>
+    <string name="dialog_perm_fix">Fix</string>
+
+    <!-- Notifications -->
+    <string name="notif_accessibility_lost_title">Accessibility Service Disconnected</string>
+    <string name="notif_accessibility_lost_body">MobileAgent\'s accessibility service was stopped. Tap to re-enable.</string>
+</resources>

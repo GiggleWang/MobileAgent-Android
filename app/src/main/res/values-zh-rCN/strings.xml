@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MobileAgent</string>
+    <string name="accessibility_service_description">MobileAgent 需要无障碍权限来执行点击、滑动和文字输入操作。</string>
+
+    <!-- Navigation -->
+    <string name="nav_main">首页</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_permissions">权限</string>
+
+    <!-- Main Screen -->
+    <string name="instruction_hint">输入你的指令…</string>
+    <string name="btn_start">开始</string>
+    <string name="btn_stop">停止</string>
+    <string name="status_idle">就绪</string>
+    <string name="status_running">运行中…</string>
+    <string name="status_finished">已完成</string>
+    <string name="execution_log">执行日志</string>
+    <string name="no_logs">暂无执行日志</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">API 设置</string>
+    <string name="settings_provider">服务商</string>
+    <string name="settings_endpoint">API 地址</string>
+    <string name="settings_endpoint_hint">https://api.openai.com/v1</string>
+    <string name="settings_api_key">API 密钥</string>
+    <string name="settings_api_key_hint">sk-…</string>
+    <string name="settings_model">模型名称</string>
+    <string name="settings_model_hint">gpt-4o</string>
+    <string name="settings_coordinate_type">坐标类型</string>
+    <string name="settings_coord_absolute">绝对坐标</string>
+    <string name="settings_coord_normalized">归一化坐标 (0–1000)</string>
+    <string name="settings_max_steps">最大步数</string>
+    <string name="settings_enable_notetaker">启用笔记 Agent</string>
+    <string name="settings_saved">设置已保存</string>
+    <string name="settings_save">保存</string>
+    <string name="settings_test_connection">测试连接</string>
+
+    <!-- Permission Screen -->
+    <string name="permissions_title">权限管理</string>
+    <string name="perm_accessibility">无障碍服务</string>
+    <string name="perm_accessibility_desc">用于执行屏幕点击、滑动和输入操作</string>
+    <string name="perm_overlay">悬浮窗权限</string>
+    <string name="perm_overlay_desc">用于显示悬浮控制面板</string>
+    <string name="perm_notification">通知权限</string>
+    <string name="perm_notification_desc">用于前台服务运行</string>
+    <string name="perm_status_granted">已授权</string>
+    <string name="perm_status_denied">未授权</string>
+    <string name="perm_btn_enable">去开启</string>
+    <string name="perm_all_granted">所有权限已授权</string>
+    <string name="perm_battery">电池优化</string>
+    <string name="perm_battery_desc">免除电池优化限制，防止系统关闭无障碍服务</string>
+
+    <!-- Permission Dialog -->
+    <string name="dialog_missing_permissions_title">需要权限</string>
+    <string name="dialog_perm_fix">去修复</string>
+
+    <!-- Notifications -->
+    <string name="notif_accessibility_lost_title">无障碍服务已断开</string>
+    <string name="notif_accessibility_lost_body">MobileAgent 的无障碍服务已停止，点击重新启用。</string>
+</resources>
