@@ -166,6 +166,9 @@ This project is an Android-native reimplementation inspired by the **Mobile-Agen
 - **Paper (v1)**: [Mobile-Agent: Autonomous Multi-Modal Mobile Device Agent with Visual Perception](https://arxiv.org/abs/2401.16158) (Wang et al., 2024)
 - **Paper (v2)**: [Mobile-Agent-v2: Mobile Device Operation Assistant with Effective Navigation via Multi-Agent Collaboration](https://arxiv.org/abs/2406.01014) (Wang et al., 2024)
 - The original Mobile-Agent runs as a Python script controlling the phone via ADB from a desktop. This project reimplements the core ideas as a standalone Android app — no PC or ADB connection required.
+- This project actively participates in and acknowledges the [LINUX.DO](https://linux.do/) community. Thanks to the community members for their feedback and support.
+
+  [![LINUX.DO Acknowledged](https://camo.githubusercontent.com/b646c70ca1bf17c7302378d4cc8183a5a7a7e3cdf0a45b8287c677ecba3b96d0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c494e55582e444f2d41636b6e6f776c65646765642d626c75653f7374796c653d666c61742d737175617265266c6f676f3d646973636f75727365)](https://linux.do/)
 
 ## License
 
