@@ -20,9 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobileagent.app.R
-import com.mobileagent.app.ui.theme.Green500
-import com.mobileagent.app.ui.theme.Orange500
-import com.mobileagent.app.ui.theme.Red500
+import com.mobileagent.app.ui.theme.*
 import com.mobileagent.app.util.PermissionChecker
 
 data class StepLog(
@@ -127,14 +125,24 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             Button(
                 onClick = { viewModel.startTask() },
                 enabled = !isRunning && instruction.isNotBlank(),
-                modifier = Modifier.weight(1f)
-            ) { Text(stringResource(R.string.btn_start)) }
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = BtnStart)
+            ) {
+                Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(stringResource(R.string.btn_start))
+            }
 
-            OutlinedButton(
+            Button(
                 onClick = { viewModel.stopTask() },
                 enabled = isRunning,
-                modifier = Modifier.weight(1f)
-            ) { Text(stringResource(R.string.btn_stop)) }
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = BtnStop)
+            ) {
+                Icon(Icons.Default.Stop, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(stringResource(R.string.btn_stop))
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -144,18 +152,36 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             logs.isNotEmpty() -> stringResource(R.string.status_finished)
             else -> stringResource(R.string.status_idle)
         }
-        Text(
-            text = statusText,
-            style = MaterialTheme.typography.labelLarge,
-            color = if (isRunning) MaterialTheme.colorScheme.primary
-            else MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = if (isRunning) Icons.Default.PlayArrow else if (logs.isNotEmpty()) Icons.Default.CheckCircle else Icons.Default.Circle,
+                contentDescription = null,
+                tint = if (isRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(
+                text = statusText,
+                style = MaterialTheme.typography.labelLarge,
+                color = if (isRunning) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
         HorizontalDivider()
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(text = stringResource(R.string.execution_log), style = MaterialTheme.typography.titleMedium)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                Icons.Default.List,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = stringResource(R.string.execution_log), style = MaterialTheme.typography.titleMedium)
+        }
         Spacer(modifier = Modifier.height(8.dp))
 
         if (logs.isEmpty()) {
@@ -163,11 +189,20 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 modifier = Modifier.fillMaxWidth().weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stringResource(R.string.no_logs),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        Icons.Default.Inbox,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.no_logs),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         } else {
             LazyColumn(

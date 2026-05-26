@@ -5,8 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,8 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.mobileagent.app.R
 import com.mobileagent.app.api.*
 import com.mobileagent.app.data.PreferencesManager
-import com.mobileagent.app.ui.theme.Green500
-import com.mobileagent.app.ui.theme.Red500
+import com.mobileagent.app.ui.theme.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,10 +67,14 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
             Spacer(modifier = Modifier.height(24.dp))
 
             // Provider selection
-            Text(
-                text = stringResource(R.string.settings_provider),
-                style = MaterialTheme.typography.titleSmall
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.Cloud, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.settings_provider),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             val providers = listOf("openai" to "OpenAI Compatible", "anthropic" to "Anthropic")
             providers.forEach { (value, label) ->
@@ -95,6 +97,7 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                 onValueChange = { endpoint = it },
                 label = { Text(stringResource(R.string.settings_endpoint)) },
                 placeholder = { Text(stringResource(R.string.settings_endpoint_hint)) },
+                leadingIcon = { Icon(Icons.Default.Link, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -106,6 +109,7 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                 onValueChange = { apiKey = it },
                 label = { Text(stringResource(R.string.settings_api_key)) },
                 placeholder = { Text(stringResource(R.string.settings_api_key_hint)) },
+                leadingIcon = { Icon(Icons.Default.Key, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation()
@@ -118,6 +122,7 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                 onValueChange = { model = it },
                 label = { Text(stringResource(R.string.settings_model)) },
                 placeholder = { Text(stringResource(R.string.settings_model_hint)) },
+                leadingIcon = { Icon(Icons.Default.SmartToy, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -130,7 +135,7 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OutlinedButton(
+                Button(
                     onClick = {
                         testState = TestState.Testing
                         scope.launch {
@@ -138,8 +143,11 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                         }
                     },
                     enabled = endpoint.isNotBlank() && apiKey.isNotBlank() && model.isNotBlank()
-                            && testState !is TestState.Testing
+                            && testState !is TestState.Testing,
+                    colors = ButtonDefaults.buttonColors(containerColor = BtnTest)
                 ) {
+                    Icon(Icons.Default.NetworkCheck, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(6.dp))
                     Text(stringResource(R.string.settings_test_connection))
                 }
 
@@ -189,10 +197,14 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Coordinate type
-            Text(
-                text = stringResource(R.string.settings_coordinate_type),
-                style = MaterialTheme.typography.titleSmall
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.GridOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.settings_coordinate_type),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
             val coordTypes = listOf(
                 "absolute" to stringResource(R.string.settings_coord_absolute),
@@ -217,6 +229,7 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                 value = maxSteps,
                 onValueChange = { maxSteps = it.filter { c -> c.isDigit() } },
                 label = { Text(stringResource(R.string.settings_max_steps)) },
+                leadingIcon = { Icon(Icons.Default.Repeat, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -226,13 +239,17 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(R.string.settings_enable_notetaker),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.NoteAlt, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.settings_enable_notetaker),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
                 Switch(
                     checked = enableNotetaker,
                     onCheckedChange = { enableNotetaker = it }
@@ -258,8 +275,11 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                         snackbarHostState.showSnackbar(savedMsg)
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = BtnSave)
             ) {
+                Icon(Icons.Default.Save, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(stringResource(R.string.settings_save))
             }
         }

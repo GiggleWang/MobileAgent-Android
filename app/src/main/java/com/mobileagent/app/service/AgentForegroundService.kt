@@ -167,7 +167,7 @@ class AgentForegroundService : Service() {
                     AgentEventBus.post(result)
                     floatingWindow?.update(result.step, result.phase, result.message)
                     if (result.phase == "done" || result.phase == "finished" || result.phase == "answer") {
-                        delay(3000)
+                        delay(5000)
                         floatingWindow?.dismiss()
                         currentLoop = null
                         stopForeground(STOP_FOREGROUND_REMOVE)

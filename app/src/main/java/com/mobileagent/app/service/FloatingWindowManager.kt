@@ -1,5 +1,8 @@
 package com.mobileagent.app.service
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -12,6 +15,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
 
@@ -27,6 +31,8 @@ class FloatingWindowManager(private val context: Context) {
     private var messageText: TextView? = null
     private var bubbleView: View? = null
     private var detailPanel: LinearLayout? = null
+    private var pulseAnimator: AnimatorSet? = null
+    private var bubbleBackground: GradientDrawable? = null
 
     private val params = WindowManager.LayoutParams(
         WindowManager.LayoutParams.WRAP_CONTENT,
@@ -62,14 +68,15 @@ class FloatingWindowManager(private val context: Context) {
         }
 
         // Bubble (always visible)
+        bubbleBackground = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = dp(20).toFloat()
+            setColor(0xE6333333.toInt())
+        }
         val bubble = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
             setPadding(dp(12), dp(8), dp(12), dp(8))
-            background = GradientDrawable().apply {
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = dp(20).toFloat()
-                setColor(0xE6333333.toInt())
-            }
+            background = bubbleBackground
             gravity = Gravity.CENTER_VERTICAL
         }
 
@@ -157,6 +164,48 @@ class FloatingWindowManager(private val context: Context) {
         floatingView = container
         windowManager?.addView(container, params)
         isShowing = true
+        startPulseAnimation(bubble)
+    }
+
+    private fun startPulseAnimation(view: View) {
+        pulseAnimator?.cancel()
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.05f, 1f).apply {
+            repeatCount = ValueAnimator.INFINITE
+        }
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.05f, 1f).apply {
+            repeatCount = ValueAnimator.INFINITE
+        }
+        val alpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.85f, 1f).apply {
+            repeatCount = ValueAnimator.INFINITE
+        }
+        pulseAnimator = AnimatorSet().apply {
+            playTogether(scaleX, scaleY, alpha)
+            duration = 1500
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
+    }
+
+    private fun stopPulseAnimation() {
+        pulseAnimator?.cancel()
+        pulseAnimator = null
+        bubbleView?.scaleX = 1f
+        bubbleView?.scaleY = 1f
+        bubbleView?.alpha = 1f
+    }
+
+    private fun playSuccessAnimation() {
+        stopPulseAnimation()
+        val view = bubbleView ?: return
+        val bounce = AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.2f, 0.95f, 1.05f, 1f),
+                ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.2f, 0.95f, 1.05f, 1f)
+            )
+            duration = 600
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+        bounce.start()
     }
 
     fun update(step: Int, phase: String, message: String) {
@@ -176,6 +225,10 @@ class FloatingWindowManager(private val context: Context) {
         }
 
         val stepLabel = if (step >= 0) "Step $step" else ""
+        val cornerRadius = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 20f,
+            context.resources.displayMetrics
+        )
 
         stepText?.post {
             stepText?.text = emoji
@@ -183,33 +236,26 @@ class FloatingWindowManager(private val context: Context) {
             messageText?.text = message
 
             if (phase == "finished" || phase == "done" || phase == "answer") {
-                bubbleView?.background = GradientDrawable().apply {
-                    shape = GradientDrawable.RECTANGLE
-                    cornerRadius = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 20f,
-                        context.resources.displayMetrics
-                    )
-                    setColor(0xE6006633.toInt())
-                }
+                bubbleBackground?.setColor(0xE61B5E3B.toInt())
+                bubbleView?.background = bubbleBackground
+                playSuccessAnimation()
             } else if (phase == "error") {
-                bubbleView?.background = GradientDrawable().apply {
-                    shape = GradientDrawable.RECTANGLE
-                    cornerRadius = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 20f,
-                        context.resources.displayMetrics
-                    )
-                    setColor(0xE6660000.toInt())
-                }
+                stopPulseAnimation()
+                bubbleBackground?.setColor(0xE6660000.toInt())
+                bubbleView?.background = bubbleBackground
             }
         }
     }
 
     fun dismiss() {
         if (!isShowing) return
+        stopPulseAnimation()
         try {
             windowManager?.removeView(floatingView)
         } catch (_: Exception) { }
         floatingView = null
+        bubbleView = null
+        bubbleBackground = null
         isShowing = false
         isExpanded = false
     }

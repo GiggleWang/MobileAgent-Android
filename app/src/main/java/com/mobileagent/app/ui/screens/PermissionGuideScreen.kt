@@ -6,8 +6,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -189,6 +188,8 @@ private fun PermissionItem(
             if (!granted) {
                 Spacer(modifier = Modifier.width(8.dp))
                 FilledTonalButton(onClick = onEnable) {
+                    Icon(Icons.Default.Settings, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
                     Text(stringResource(R.string.perm_btn_enable))
                 }
             }
