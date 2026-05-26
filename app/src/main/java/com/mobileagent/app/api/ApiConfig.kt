@@ -10,5 +10,6 @@ data class ApiConfig(
     val model: String = "",
     val coordType: String = "absolute",
     val maxSteps: Int = 25,
-    val enableNotetaker: Boolean = true
+    val enableNotetaker: Boolean = true,
+    val agentMode: Int = 1
 )

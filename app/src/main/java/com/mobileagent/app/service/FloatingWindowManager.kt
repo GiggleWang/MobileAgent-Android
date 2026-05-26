@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.Typeface
@@ -33,6 +34,8 @@ class FloatingWindowManager(private val context: Context) {
     private var detailPanel: LinearLayout? = null
     private var pulseAnimator: AnimatorSet? = null
     private var bubbleBackground: GradientDrawable? = null
+    private var isCompleted = false
+    var onDismissRequest: (() -> Unit)? = null
 
     private val params = WindowManager.LayoutParams(
         WindowManager.LayoutParams.WRAP_CONTENT,
@@ -151,9 +154,18 @@ class FloatingWindowManager(private val context: Context) {
                 }
                 MotionEvent.ACTION_UP -> {
                     if (!isDragging) {
-                        isExpanded = !isExpanded
-                        detailPanel?.visibility = if (isExpanded) View.VISIBLE else View.GONE
-                        windowManager?.updateViewLayout(floatingView, params)
+                        if (isCompleted) {
+                            val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            }
+                            launchIntent?.let { context.startActivity(it) }
+                            dismiss()
+                            onDismissRequest?.invoke()
+                        } else {
+                            isExpanded = !isExpanded
+                            detailPanel?.visibility = if (isExpanded) View.VISIBLE else View.GONE
+                            windowManager?.updateViewLayout(floatingView, params)
+                        }
                     }
                     true
                 }
@@ -236,10 +248,12 @@ class FloatingWindowManager(private val context: Context) {
             messageText?.text = message
 
             if (phase == "finished" || phase == "done" || phase == "answer") {
+                isCompleted = true
                 bubbleBackground?.setColor(0xE61B5E3B.toInt())
                 bubbleView?.background = bubbleBackground
                 playSuccessAnimation()
             } else if (phase == "error") {
+                isCompleted = true
                 stopPulseAnimation()
                 bubbleBackground?.setColor(0xE6660000.toInt())
                 bubbleView?.background = bubbleBackground

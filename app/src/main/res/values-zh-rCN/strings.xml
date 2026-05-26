@@ -20,6 +20,8 @@
 
     <!-- Settings Screen -->
     <string name="settings_title">API 设置</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_lang_system">跟随系统</string>
     <string name="settings_provider">服务商</string>
     <string name="settings_endpoint">API 地址</string>
     <string name="settings_endpoint_hint">https://api.openai.com/v1</string>
@@ -32,9 +34,19 @@
     <string name="settings_coord_normalized">归一化坐标 (0–1000)</string>
     <string name="settings_max_steps">最大步数</string>
     <string name="settings_enable_notetaker">启用笔记 Agent</string>
+    <string name="settings_agent_mode">执行模式</string>
+    <string name="settings_mode_fast">极速</string>
+    <string name="settings_mode_balanced">均衡</string>
+    <string name="settings_mode_accurate">精准</string>
     <string name="settings_saved">设置已保存</string>
     <string name="settings_save">保存</string>
     <string name="settings_test_connection">测试连接</string>
+
+    <!-- Restart Dialog -->
+    <string name="restart_title">需要重启</string>
+    <string name="restart_message">语言已更改，重启应用后生效。</string>
+    <string name="restart_now">立即重启</string>
+    <string name="restart_later">稍后</string>
 
     <!-- Permission Screen -->
     <string name="permissions_title">权限管理</string>

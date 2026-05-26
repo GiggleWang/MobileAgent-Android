@@ -20,6 +20,8 @@
 
     <!-- Settings Screen -->
     <string name="settings_title">API Settings</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_lang_system">System Default</string>
     <string name="settings_provider">Provider</string>
     <string name="settings_endpoint">API Endpoint</string>
     <string name="settings_endpoint_hint">https://api.openai.com/v1</string>
@@ -32,9 +34,19 @@
     <string name="settings_coord_normalized">Normalized (0–1000)</string>
     <string name="settings_max_steps">Max Steps</string>
     <string name="settings_enable_notetaker">Enable Notetaker</string>
+    <string name="settings_agent_mode">Agent Mode</string>
+    <string name="settings_mode_fast">Fast</string>
+    <string name="settings_mode_balanced">Balanced</string>
+    <string name="settings_mode_accurate">Accurate</string>
     <string name="settings_saved">Settings saved</string>
     <string name="settings_save">Save</string>
     <string name="settings_test_connection">Test Connection</string>
+
+    <!-- Restart Dialog -->
+    <string name="restart_title">Restart Required</string>
+    <string name="restart_message">Language changed. Restart the app to apply.</string>
+    <string name="restart_now">Restart Now</string>
+    <string name="restart_later">Later</string>
 
     <!-- Permission Screen -->
     <string name="permissions_title">Permissions</string>

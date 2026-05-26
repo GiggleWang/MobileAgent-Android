@@ -95,6 +95,7 @@ class AgentLoop(
     private suspend fun runLoop(instruction: String) {
         val infoPool = InfoPool(instruction = instruction)
         val maxSteps = config.maxSteps
+        val agentMode = config.agentMode // 0=fast, 1=balanced, 2=accurate
         val useNormalized = config.coordType == "normalized"
         val (screenWidth, screenHeight) = controller.getScreenSize()
 
@@ -122,11 +123,14 @@ class AgentLoop(
 
             checkErrorThreshold(infoPool)
 
-            // Manager phase
-            val skipManager = infoPool.lastAction != null &&
-                    infoPool.lastAction!!["action"] == "unknown" &&
-                    !infoPool.errorFlagPlan
-            if (!skipManager) {
+            // Manager phase: frequency depends on agentMode
+            val needsManager = when (agentMode) {
+                0 -> step == 0 || infoPool.plan.isEmpty() || infoPool.errorFlagPlan
+                1 -> step == 0 || infoPool.plan.isEmpty() || infoPool.errorFlagPlan ||
+                        (infoPool.actionOutcomes.isNotEmpty() && infoPool.actionOutcomes.last() != "A")
+                else -> true
+            }
+            if (needsManager) {
                 val managerPrompt = manager.getPrompt(infoPool) +
                     if (elementListText.isNotBlank()) "\n\n$elementListText" else ""
                 val managerResponse = callApi(step, "manager", managerPrompt, listOf(annotatedScreenshot))
@@ -184,6 +188,23 @@ class AgentLoop(
 
             val waitMs = if (step == 0) 8000L else 2000L
             delay(waitMs)
+
+            // Skip reflector: fast mode skips for system buttons + simple clicks; balanced skips for system buttons only
+            val skipReflector = when (agentMode) {
+                0 -> action is AgentAction.SystemButton || action is AgentAction.Type
+                1 -> action is AgentAction.SystemButton
+                else -> false
+            }
+            if (skipReflector) {
+                if (annotatedScreenshot !== screenshotBefore) {
+                    annotatedScreenshot.recycle()
+                }
+                infoPool.actionOutcomes.add("A")
+                infoPool.errorDescriptions.add("None")
+                updateProgress(infoPool)
+                screenshotBefore.recycle()
+                continue
+            }
 
             // Capture after screenshot
             val screenshotAfter = captureWithRetry()

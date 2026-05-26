@@ -11,6 +11,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import com.mobileagent.app.data.PreferencesManager
 import com.mobileagent.app.service.AgentForegroundService
+import com.mobileagent.app.ui.LocaleManager
+import com.mobileagent.app.ui.LocaleProvider
 import com.mobileagent.app.ui.navigation.AppNavigation
 import com.mobileagent.app.ui.theme.MobileAgentTheme
 
@@ -34,13 +36,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         preferencesManager = PreferencesManager(applicationContext)
+        LocaleManager.init(applicationContext)
         instance = this
 
         val initialRoute = intent?.getStringExtra("navigate_to")
 
         setContent {
-            MobileAgentTheme {
-                AppNavigation(preferencesManager, initialRoute = initialRoute)
+            LocaleProvider {
+                MobileAgentTheme {
+                    AppNavigation(preferencesManager, initialRoute = initialRoute)
+                }
             }
         }
     }

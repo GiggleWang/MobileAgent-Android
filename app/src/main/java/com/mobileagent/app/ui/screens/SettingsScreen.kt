@@ -45,6 +45,10 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
     var coordType by remember(settings) { mutableStateOf(settings.coordType) }
     var maxSteps by remember(settings) { mutableStateOf(settings.maxSteps.toString()) }
     var enableNotetaker by remember(settings) { mutableStateOf(settings.enableNotetaker) }
+    var agentMode by remember(settings) { mutableStateOf(settings.agentMode) }
+
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val currentLang = com.mobileagent.app.ui.LocaleManager.current
 
     // Connection test state
     var testState by remember { mutableStateOf<TestState>(TestState.Idle) }
@@ -65,6 +69,41 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
             )
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            // Language selection
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.Language, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.settings_language),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            val languages = listOf(
+                "system" to stringResource(R.string.settings_lang_system),
+                "en" to "English",
+                "zh-CN" to "中文"
+            )
+            languages.forEach { (value, label) ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = currentLang == value,
+                        onClick = {
+                            com.mobileagent.app.ui.LocaleManager.setLocale(context, value)
+                        }
+                    )
+                    Text(
+                        text = label,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Provider selection
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -256,6 +295,44 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                 )
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Agent mode slider
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.Speed, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.settings_agent_mode),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            val modeLabels = listOf(
+                stringResource(R.string.settings_mode_fast),
+                stringResource(R.string.settings_mode_balanced),
+                stringResource(R.string.settings_mode_accurate)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                modeLabels.forEach { label ->
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            Slider(
+                value = agentMode.toFloat(),
+                onValueChange = { agentMode = it.toInt() },
+                valueRange = 0f..2f,
+                steps = 1,
+                modifier = Modifier.fillMaxWidth()
+            )
+
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
@@ -269,7 +346,8 @@ fun SettingsScreen(preferencesManager: PreferencesManager) {
                                 model = model,
                                 coordType = coordType,
                                 maxSteps = maxSteps.toIntOrNull() ?: 25,
-                                enableNotetaker = enableNotetaker
+                                enableNotetaker = enableNotetaker,
+                                agentMode = agentMode
                             )
                         )
                         snackbarHostState.showSnackbar(savedMsg)

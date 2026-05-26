@@ -86,7 +86,13 @@ class AgentForegroundService : Service() {
 
                 // Show floating status window
                 if (android.provider.Settings.canDrawOverlays(this)) {
-                    floatingWindow = FloatingWindowManager(this)
+                    floatingWindow = FloatingWindowManager(this).apply {
+                        onDismissRequest = {
+                            floatingWindow = null
+                            stopForeground(STOP_FOREGROUND_REMOVE)
+                            stopSelf()
+                        }
+                    }
                     floatingWindow?.show()
                 }
 
@@ -137,7 +143,8 @@ class AgentForegroundService : Service() {
                 model = settings.model,
                 coordType = settings.coordType,
                 maxSteps = settings.maxSteps,
-                enableNotetaker = settings.enableNotetaker
+                enableNotetaker = settings.enableNotetaker,
+                agentMode = settings.agentMode
             )
 
             if (apiConfig.endpoint.isBlank() || apiConfig.apiKey.isBlank()) {
@@ -167,11 +174,7 @@ class AgentForegroundService : Service() {
                     AgentEventBus.post(result)
                     floatingWindow?.update(result.step, result.phase, result.message)
                     if (result.phase == "done" || result.phase == "finished" || result.phase == "answer") {
-                        delay(5000)
-                        floatingWindow?.dismiss()
                         currentLoop = null
-                        stopForeground(STOP_FOREGROUND_REMOVE)
-                        stopSelf()
                     }
                 }
             }

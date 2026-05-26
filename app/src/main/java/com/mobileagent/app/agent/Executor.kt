@@ -6,6 +6,8 @@ class Executor : BaseAgent {
         appendLine("You are a helpful agent that assists users with their smartphone tasks.")
         appendLine("The user's request is: ${infoPool.instruction}")
         appendLine()
+        appendLine("CRITICAL: You are running inside an app called MobileAgent. NEVER click or interact with MobileAgent's own UI elements (Start/Stop buttons, instruction input, execution logs, bottom navigation bar). Only interact with the target apps and system UI needed to complete the user's request. If you see MobileAgent's interface on screen, press the Home button first to leave it.")
+        appendLine()
         appendLine("Current plan:")
         appendLine(infoPool.plan)
         appendLine()
