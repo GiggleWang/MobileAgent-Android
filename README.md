@@ -1,11 +1,13 @@
 # MobileAgent Android
 
-An Android-native implementation of the [Mobile-Agent](https://github.com/X-PLUG/MobileAgent) autonomous agent framework. This app enables large language models (GPT-4o, Claude, etc.) to **see and operate your Android phone** — it captures screenshots, reasons about what's on screen, and performs taps, swipes, and text input to complete tasks you describe in natural language.
+
 
 <p align="center">
-  <img src="docs/screenshot_main.png" width="240" />
-  <img src="docs/screenshot_log.png" width="240" />
-  <img src="docs/screenshot_permissions.png" width="240" />
+  <img src="img/banner.png" width=80% />
+</p>
+An Android-native implementation of the [Mobile-Agent](https://github.com/X-PLUG/MobileAgent) autonomous agent framework. This app enables large language models (GPT-4o, Claude, etc.) to **see and operate your Android phone** — it captures screenshots, reasons about what's on screen, and performs taps, swipes, and text input to complete tasks you describe in natural language.
+<p align="center">
+  <img src="img/arch.png" width=80% />
 </p>
 
 ## Features
@@ -21,12 +23,16 @@ An Android-native implementation of the [Mobile-Agent](https://github.com/X-PLUG
 ## Demo
 
 ### Task Execution
-<video src="example.mp4" controls width="360"></video>
+<video src="img/example.mp4" controls width="360"></video>
 
 ### Execution Log
-<video src="execution-log.mp4" controls width="360"></video>
+<video src="img/execution-log.mp4" controls width="360"></video>
 
 ## Architecture
+
+<p align="center">
+  <img src="img/arch.png" width="720" />
+</p>
 
 ```
 User Instruction
