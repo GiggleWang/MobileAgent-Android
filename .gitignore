@@ -12,3 +12,6 @@ local.properties
 *.aab
 *.ap_
 *.dex
+keystore.properties
+*.jks
+*.keystore
