@@ -113,14 +113,14 @@ class AgentAccessibilityService : AccessibilityService() {
         return performGlobalAction(GLOBAL_ACTION_HOME)
     }
 
-    suspend fun performEnter(): Boolean {
-        val path = android.graphics.Path()
-        val metrics = resources.displayMetrics
-        val x = metrics.widthPixels * 0.85f
-        val y = metrics.heightPixels * 0.72f
-        path.moveTo(x, y)
-        val stroke = GestureDescription.StrokeDescription(path, 0, 50)
-        return dispatchGestureAsync(GestureDescription.Builder().addStroke(stroke).build())
+    fun performEnter(): Boolean {
+        val focusedNode = findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+        if (focusedNode != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            return focusedNode.performAction(
+                AccessibilityNodeInfo.AccessibilityAction.ACTION_IME_ENTER.id
+            )
+        }
+        return performGlobalAction(GLOBAL_ACTION_BACK)
     }
 
     private suspend fun dispatchGestureAsync(gesture: GestureDescription): Boolean {

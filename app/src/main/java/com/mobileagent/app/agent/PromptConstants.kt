@@ -2,7 +2,8 @@ package com.mobileagent.app.agent
 
 object PromptConstants {
 
-    const val INPUT_KNOW = """To type text, first tap the input field to activate it. Once the input field is focused (usually indicated by a cursor or blinking line), use the type action to input text. If the keyboard appears, it will not block the agent's operation."""
+    const val INPUT_KNOW = """To type text, first tap the input field to activate it. Once the input field is focused (usually indicated by a cursor or blinking line), use the type action to input text. If the keyboard appears, it will not block the agent's operation.
+IMPORTANT: After typing text in a search field, use {"action": "system_button", "button": "enter"} to submit/search. Do NOT try to visually click the search button on the keyboard. Do NOT click on search suggestions unless that is your specific intent."""
 
     val ATOMIC_ACTION_SIGNATURES = """
 Available actions:
