@@ -22,7 +22,7 @@ An Android-native implementation of the [Mobile-Agent](https://github.com/X-PLUG
 
 ## Demo
 
-[![Demo Video](https://i0.hdslb.com/bfs/archive/acafc5b646c92a17f9227d46b172ec1929f2511a.jpg)](https://www.bilibili.com/video/BV1JLVT6pEG2/)
+[![Demo Video](https://img.shields.io/badge/Bilibili-Demo_Video-00A1D6?logo=bilibili)](https://www.bilibili.com/video/BV1JLVT6pEG2/)
 
 ## Architecture
 
