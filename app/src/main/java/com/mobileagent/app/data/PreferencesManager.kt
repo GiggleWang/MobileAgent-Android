@@ -23,6 +23,7 @@ class PreferencesManager(private val context: Context) {
         val KEY_ENABLE_NOTETAKER = booleanPreferencesKey("enable_notetaker")
         val KEY_AGENT_MODE = intPreferencesKey("agent_mode")
         val KEY_LANGUAGE = stringPreferencesKey("language")
+        val KEY_LOCAL_MODEL_ID = stringPreferencesKey("local_model_id")
     }
 
     data class Settings(
@@ -34,7 +35,8 @@ class PreferencesManager(private val context: Context) {
         val maxSteps: Int = 25,
         val enableNotetaker: Boolean = true,
         val agentMode: Int = 1,
-        val language: String = "system"
+        val language: String = "system",
+        val localModelId: String = "qwen3-vl-2b"
     )
 
     val settingsFlow: Flow<Settings> = context.dataStore.data.map { prefs ->
@@ -47,7 +49,8 @@ class PreferencesManager(private val context: Context) {
             maxSteps = prefs[KEY_MAX_STEPS] ?: 25,
             enableNotetaker = prefs[KEY_ENABLE_NOTETAKER] ?: true,
             agentMode = prefs[KEY_AGENT_MODE] ?: 1,
-            language = prefs[KEY_LANGUAGE] ?: "system"
+            language = prefs[KEY_LANGUAGE] ?: "system",
+            localModelId = prefs[KEY_LOCAL_MODEL_ID] ?: "qwen3-vl-2b"
         )
     }
 
@@ -74,6 +77,7 @@ class PreferencesManager(private val context: Context) {
             prefs[KEY_ENABLE_NOTETAKER] = settings.enableNotetaker
             prefs[KEY_AGENT_MODE] = settings.agentMode
             prefs[KEY_LANGUAGE] = settings.language
+            prefs[KEY_LOCAL_MODEL_ID] = settings.localModelId
         }
     }
 }

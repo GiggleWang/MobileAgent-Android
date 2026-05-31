@@ -40,7 +40,35 @@
     <string name="settings_mode_accurate">精准</string>
     <string name="settings_saved">设置已保存</string>
     <string name="settings_save">保存</string>
+    <string name="settings_autosave_hint">修改后自动保存</string>
     <string name="settings_test_connection">测试连接</string>
+
+    <!-- 自带(端侧)模型 -->
+    <string name="settings_provider_local">自带模型(端侧)</string>
+    <string name="settings_model_section">端侧模型</string>
+    <string name="settings_model_select_hint">选择并下载一个模型</string>
+    <string name="settings_model_download">下载</string>
+    <string name="settings_model_delete">删除</string>
+    <string name="settings_model_cancel">取消</string>
+    <string name="settings_model_ready">已就绪</string>
+    <string name="settings_model_not_downloaded">未下载</string>
+    <string name="settings_model_downloading">下载中…</string>
+    <string name="settings_model_verifying">校验中…</string>
+    <string name="settings_model_failed">下载失败</string>
+    <string name="settings_model_benchmark">测试延迟</string>
+    <string name="settings_model_benchmarking">测试中(需加载模型,约 10–30 秒)…</string>
+    <string name="settings_benchmarking">测试中…</string>
+    <string name="settings_model_benchmark_failed">测试失败</string>
+    <string name="settings_model_use">使用此模型</string>
+    <string name="settings_model_in_use">已选用</string>
+    <string name="settings_model_recommended">推荐</string>
+    <string name="settings_model_retry">重试</string>
+    <string name="bench_header">延迟(短 / 中 / 长 请求):</string>
+    <string name="bench_short">短</string>
+    <string name="bench_medium">中</string>
+    <string name="bench_long">长</string>
+    <string name="bench_ttft">首token</string>
+    <string name="bench_itl">token间</string>
 
     <!-- Restart Dialog -->
     <string name="restart_title">需要重启</string>

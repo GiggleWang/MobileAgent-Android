@@ -40,7 +40,35 @@
     <string name="settings_mode_accurate">Accurate</string>
     <string name="settings_saved">Settings saved</string>
     <string name="settings_save">Save</string>
+    <string name="settings_autosave_hint">Changes are saved automatically</string>
     <string name="settings_test_connection">Test Connection</string>
+
+    <!-- On-device (built-in) model -->
+    <string name="settings_provider_local">Built-in (on-device)</string>
+    <string name="settings_model_section">On-device model</string>
+    <string name="settings_model_select_hint">Select and download a model to use</string>
+    <string name="settings_model_download">Download</string>
+    <string name="settings_model_delete">Delete</string>
+    <string name="settings_model_cancel">Cancel</string>
+    <string name="settings_model_ready">Ready</string>
+    <string name="settings_model_not_downloaded">Not downloaded</string>
+    <string name="settings_model_downloading">Downloading…</string>
+    <string name="settings_model_verifying">Verifying…</string>
+    <string name="settings_model_failed">Download failed</string>
+    <string name="settings_model_benchmark">Benchmark</string>
+    <string name="settings_model_benchmarking">Benchmarking (loads model, ~10–30s)…</string>
+    <string name="settings_benchmarking">Benchmarking…</string>
+    <string name="settings_model_benchmark_failed">Benchmark failed</string>
+    <string name="settings_model_use">Use this model</string>
+    <string name="settings_model_in_use">In use</string>
+    <string name="settings_model_recommended">Recommended</string>
+    <string name="settings_model_retry">Retry</string>
+    <string name="bench_header">Latency (short / medium / long prompt):</string>
+    <string name="bench_short">Short</string>
+    <string name="bench_medium">Medium</string>
+    <string name="bench_long">Long</string>
+    <string name="bench_ttft">first token</string>
+    <string name="bench_itl">inter-token</string>
 
     <!-- Restart Dialog -->
     <string name="restart_title">Restart Required</string>

@@ -40,6 +40,7 @@ class AgentForegroundService : Service() {
     private var screenCaptureManager: ScreenCaptureManager? = null
     private var mediaProjection: MediaProjection? = null
     private var floatingWindow: FloatingWindowManager? = null
+    private var localVlmClient: LocalVlmClient? = null
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -105,6 +106,8 @@ class AgentForegroundService : Service() {
             ACTION_STOP -> {
                 currentLoop?.stop()
                 currentLoop = null
+                localVlmClient?.close()
+                localVlmClient = null
                 screenCaptureManager?.release()
                 screenCaptureManager = null
                 floatingWindow?.dismiss()
@@ -144,17 +147,25 @@ class AgentForegroundService : Service() {
                 coordType = settings.coordType,
                 maxSteps = settings.maxSteps,
                 enableNotetaker = settings.enableNotetaker,
-                agentMode = settings.agentMode
+                agentMode = settings.agentMode,
+                localModelId = settings.localModelId
             )
 
-            if (apiConfig.endpoint.isBlank() || apiConfig.apiKey.isBlank()) {
-                AgentEventBus.post(StepResult(-1, "error", "API not configured. Go to Settings."))
+            val configError = when (apiConfig.provider) {
+                "local" -> if (!com.mobileagent.app.data.ModelDownloadManager.isReady(this, apiConfig.localModelId))
+                    "请先在设置中下载所选模型 / Download the selected model in Settings." else null
+                else -> if (apiConfig.endpoint.isBlank() || apiConfig.apiKey.isBlank())
+                    "API not configured. Go to Settings." else null
+            }
+            if (configError != null) {
+                AgentEventBus.post(StepResult(-1, "error", configError))
                 stopSelf()
                 return
             }
 
             val apiClient: VlmApiClient = when (apiConfig.provider) {
                 "anthropic" -> AnthropicClient(apiConfig)
+                "local" -> LocalVlmClient(apiConfig, applicationContext).also { localVlmClient = it }
                 else -> OpenAiCompatibleClient(apiConfig)
             }
 
@@ -200,6 +211,8 @@ class AgentForegroundService : Service() {
     override fun onDestroy() {
         currentLoop?.stop()
         currentLoop = null
+        localVlmClient?.close()
+        localVlmClient = null
         screenCaptureManager?.release()
         floatingWindow?.dismiss()
         floatingWindow = null

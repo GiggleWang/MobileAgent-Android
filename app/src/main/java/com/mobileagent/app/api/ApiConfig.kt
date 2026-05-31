@@ -11,5 +11,6 @@ data class ApiConfig(
     val coordType: String = "absolute",
     val maxSteps: Int = 25,
     val enableNotetaker: Boolean = true,
-    val agentMode: Int = 1
+    val agentMode: Int = 1,
+    val localModelId: String = "qwen3-vl-2b"
 )

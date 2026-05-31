@@ -39,6 +39,13 @@ object ImageEncoder {
         return result
     }
 
+    /**
+     * Returns a copy scaled so its long side is <= [MAX_LONG_SIDE], or the original
+     * bitmap unchanged if it's already small enough. Callers that recycle must check
+     * `result !== input` first. Used to cap vision-token cost for on-device inference.
+     */
+    fun resizeForModel(bitmap: Bitmap): Bitmap = resizeIfNeeded(bitmap)
+
     fun getScaleFactors(bitmap: Bitmap): Pair<Float, Float> {
         val longSide = maxOf(bitmap.width, bitmap.height)
         if (longSide <= MAX_LONG_SIDE) return Pair(1f, 1f)

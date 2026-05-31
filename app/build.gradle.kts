@@ -17,12 +17,50 @@ android {
     namespace = "com.mobileagent.app"
     compileSdk = 34
 
+    // NDK used to build the on-device llama.cpp + libmtmd engine. Set to the version
+    // installed in your SDK (r28+ also gives 16 KB page alignment automatically).
+    ndkVersion = "30.0.14904198"
+
     defaultConfig {
         applicationId = "com.mobileagent.app"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
+
+        ndk {
+            // On-device inference ships arm64 only (the only ABI worth the size).
+            abiFilters += "arm64-v8a"
+        }
+        externalNativeBuild {
+            cmake {
+                // Release, arm64, with the multimodal CLI suppressed; only our
+                // vlmjni.so (+ the llama/ggml/mtmd .so it links) ends up in the APK.
+                arguments += listOf("-DANDROID_STL=c++_shared")
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
+
+    packaging {
+        jniLibs {
+            // These tool implementation libraries are built as a side effect of
+            // LLAMA_BUILD_TOOLS=ON for libmtmd, but the app never loads them.
+            excludes += listOf(
+                "lib/arm64-v8a/libllama-batched-bench-impl.so",
+                "lib/arm64-v8a/libllama-bench-impl.so",
+                "lib/arm64-v8a/libllama-completion-impl.so",
+                "lib/arm64-v8a/libllama-fit-params-impl.so",
+                "lib/arm64-v8a/libllama-perplexity-impl.so",
+                "lib/arm64-v8a/libllama-quantize-impl.so"
+            )
+        }
     }
 
     signingConfigs {
@@ -84,7 +122,7 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    // Networking
+    // Networking (also used to download the on-device model)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // JSON
